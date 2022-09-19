@@ -37,6 +37,19 @@ lazy val firesimDir = if (firesimAsLibrary) {
   file("../../sim")
 }
 
+// Checks for -DROCKET_USE_MAVEN.
+// If it's there, use a maven dependency.
+// Else, depend on subprojects in git submodules.
+def conditionalDependsOn(prj: Project): Project = {
+  if (sys.props.contains("ROCKET_USE_MAVEN")) {
+    prj.settings(Seq(
+      libraryDependencies += "edu.berkeley.cs" %% "testchipip" % "1.0-020719-SNAPSHOT",
+    ))
+  } else {
+    prj.dependsOn(testchipip)
+  }
+}
+
 /**
   * It has been a struggle for us to override settings in subprojects.
   * An example would be adding a dependency to rocketchip on midas's targetutils library,
@@ -148,7 +161,7 @@ lazy val chipyard = (project in file("generators/chipyard"))
   .dependsOn(testchipip, rocketchip, boom, hwacha, sifive_blocks, sifive_cache, iocell,
     sha3, // On separate line to allow for cleaner tutorial-setup patches
     dsptools, `rocket-dsp-utils`,
-    gemmini, icenet, tracegen, cva6, nvdla, sodor, ibex, fft_generator)
+    gemmini, icenet, tracegen, cva6, nvdla, sodor, ibex, fft_generator, accel)
   .settings(libraryDependencies ++= rocketLibDeps.value)
   .settings(commonSettings)
 
@@ -280,4 +293,20 @@ lazy val fpga_shells = (project in file("./fpga/fpga-shells"))
 
 lazy val fpga_platforms = (project in file("./fpga"))
   .dependsOn(chipyard, fpga_shells)
+  .settings(commonSettings)
+
+lazy val hls_rocc0_vadd = (project in file("/scratch/james.shi/centrifuge/chipyard/generators/accel/hls_vadd_vadd"))
+  .dependsOn(rocketchip, testchipip, midasTargetUtils, icenet)
+  .settings(commonSettings)
+    
+lazy val hls_tl0_vadd = (project in file("/scratch/james.shi/centrifuge/chipyard/generators/accel/hls_vadd_tl_vadd"))
+  .dependsOn(rocketchip, testchipip, midasTargetUtils, icenet)
+  .settings(commonSettings)
+    
+lazy val accel = conditionalDependsOn(project in file("generators/accel"))
+  .dependsOn(boom, hwacha, sifive_blocks, sifive_cache, hls_rocc0_vadd, hls_tl0_vadd)
+  .settings(commonSettings)
+
+lazy val example = conditionalDependsOn(project in file("generators/example"))
+  .dependsOn(boom, hwacha, sifive_blocks, sifive_cache, chipyard, sha3, accel)
   .settings(commonSettings)
