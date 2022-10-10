@@ -42,15 +42,15 @@ class HLSRocketConfig extends Config(
   // new freechips.rocketchip.system.BaseConfig)
   new chipyard.config.AbstractConfig)
 
-class WithHLSTop extends Config((site, here, up) => {
-  case BuildTop => (clock: Clock, reset: Bool, p: Parameters) =>
-      Module(LazyModule(new TopWithHLS()(p)).module)
-      })
+// class WithHLSTop extends Config((site, here, up) => {
+//   case BuildTop => (clock: Clock, reset: Bool, p: Parameters) =>
+//       Module(LazyModule(new TopWithHLS()(p)).module)
+//       })
 
-class TopWithHLS(implicit p: Parameters) extends Top 
-    with HasPeripheryHLStl0_vaddAXI {
-  override lazy val module = new TopWithHLSModule(this)
-}
+// class TopWithHLS(implicit p: Parameters) extends Top 
+//     with HasPeripheryHLStl0_vaddAXI {
+//   override lazy val module = new TopWithHLSModule(this)
+// }
 
-class TopWithHLSModule(l: TopWithHLS) extends TopModule(l)
-    with HasPeripheryHLStl0_vaddAXIImp
+// class TopWithHLSModule(l: TopWithHLS) extends TopModule(l)
+//     with HasPeripheryHLStl0_vaddAXIImp

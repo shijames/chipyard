@@ -14,13 +14,13 @@ class ApBusReq(dataWidth:Int, addrWidth:Int) extends Bundle{
   val address     = UInt(OUTPUT, width = addrWidth)
   val dataout     = UInt(OUTPUT, width = dataWidth)
   val size        = UInt(OUTPUT, width = addrWidth)
-  override def cloneType: this.type = new ApBusReq(dataWidth, addrWidth).asInstanceOf[this.type]
+  // override def cloneType: this.type = new ApBusReq(dataWidth, addrWidth).asInstanceOf[this.type]
 }
 
 //Response Packet Format
 class ApBusRsp(dataWidth:Int) extends Bundle{
   val datain      = UInt(INPUT , width = dataWidth)
-  override def cloneType: this.type = new ApBusRsp(dataWidth).asInstanceOf[this.type]
+  // override def cloneType: this.type = new ApBusRsp(dataWidth).asInstanceOf[this.type]
 }
 
 class ApBusIO(dataWidth:Int = 64, addrWidth:Int = 32) extends Bundle{
@@ -32,7 +32,7 @@ class ApBusIO(dataWidth:Int = 64, addrWidth:Int = 32) extends Bundle{
   val rsp = new ApBusRsp(dataWidth)
   val rsp_empty_n = Bool(INPUT )
   val rsp_read    = Bool(OUTPUT)
-  override def cloneType: this.type = new ApBusIO(dataWidth, addrWidth).asInstanceOf[this.type]
+  // override def cloneType: this.type = new ApBusIO(dataWidth, addrWidth).asInstanceOf[this.type]
 }
 
 class ApCtrlIO(dataWidth:Int = 64) extends Bundle{
@@ -43,5 +43,5 @@ class ApCtrlIO(dataWidth:Int = 64) extends Bundle{
   val idle   = Bool(OUTPUT)
   val ready  = Bool(OUTPUT)
   val rtn    = UInt(OUTPUT, width = dataWidth)
-  override def cloneType: this.type = new ApCtrlIO(dataWidth).asInstanceOf[this.type]
+  // override def cloneType: this.type = new ApCtrlIO(dataWidth).asInstanceOf[this.type]
 }

@@ -1,8 +1,0 @@
-{
-  "name" : "vadd_tl-bare-sw-bm",
-  "workdir" : "/scratch/james.shi/centrifuge/chipyard/generators/accel/hls_vadd_tl_vadd/src/main/c/", 
-  "base" : "bare",
-  "host-init" : "compile-bm.sh",
-  "bin" : "vadd_tl.bm.rv" 
-}
-

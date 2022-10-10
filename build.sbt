@@ -297,16 +297,20 @@ lazy val fpga_platforms = (project in file("./fpga"))
 
 lazy val hls_rocc0_vadd = (project in file("/scratch/james.shi/centrifuge/chipyard/generators/accel/hls_vadd_vadd"))
   .dependsOn(rocketchip, testchipip, midasTargetUtils, icenet)
+  .settings(chiselSettings)
   .settings(commonSettings)
     
 lazy val hls_tl0_vadd = (project in file("/scratch/james.shi/centrifuge/chipyard/generators/accel/hls_vadd_tl_vadd"))
   .dependsOn(rocketchip, testchipip, midasTargetUtils, icenet)
+  .settings(chiselSettings)
   .settings(commonSettings)
     
 lazy val accel = conditionalDependsOn(project in file("generators/accel"))
   .dependsOn(boom, hwacha, sifive_blocks, sifive_cache, hls_rocc0_vadd, hls_tl0_vadd)
+  .settings(chiselSettings)
   .settings(commonSettings)
 
 lazy val example = conditionalDependsOn(project in file("generators/example"))
   .dependsOn(boom, hwacha, sifive_blocks, sifive_cache, chipyard, sha3, accel)
+  .settings(chiselSettings)
   .settings(commonSettings)

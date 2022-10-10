@@ -11,7 +11,7 @@ class PriorityArbiterIO[T <: Data](gen: T, n: Int, priorityBits: Int) extends Bu
   val priority = Vec(n,Input(UInt(priorityBits.W)))
   //Priority of the outputed value
   val priorityOut = UInt(OUTPUT, width = priorityBits)
-  override def cloneType: this.type = new PriorityArbiterIO(gen, n, priorityBits).asInstanceOf[this.type]
+  // override def cloneType: this.type = new PriorityArbiterIO(gen, n, priorityBits).asInstanceOf[this.type]
 }
 
 class PriorityArbiter[T <: Data](gen: T, n: Int, priorityBits: Int) extends Module{
@@ -116,7 +116,7 @@ object InitCounter
                             extends Module(_reset=_reset)*/
 
 class RegisterQueue[T <: Data](gen: T, val entries: Int,  initVals: Seq[T], pipe: Boolean = false, flow: Boolean = false) extends Module{
-  //override val ram = Vec.tabulate(entries)((i) => (if(i<initVals.length) Reg(init=initVals(i)) else Reg(gen)))
+  // override val ram = Vec.tabulate(entries)((i) => (if(i<initVals.length) Reg(init=initVals(i)) else Reg(gen)))
   
 
   /** The I/O for this queue */
@@ -195,7 +195,7 @@ class ValidDemuxIO(fanout:Int) extends Bundle{
   val validOut = Vec(fanout, Bool(OUTPUT))
   //val validOut = Vec.fill(fanout)(Bool(OUTPUT))
 
-  override def cloneType: this.type = new ValidDemuxIO(fanout).asInstanceOf[this.type]
+  // override def cloneType: this.type = new ValidDemuxIO(fanout).asInstanceOf[this.type]
 }
 
 class ValidDemux(fanout:Int) extends Module{

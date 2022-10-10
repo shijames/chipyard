@@ -12,7 +12,7 @@ import freechips.rocketchip.util._
 import freechips.rocketchip.system._
 
 import vivadoHLS._
-import memControl._
+// import memControl._
 import hls_rocc0_vadd._
 
 class HLSrocc0_vaddControl(opcodes: OpcodeSet)(implicit p: Parameters) extends LazyRoCC(opcodes) {
@@ -94,8 +94,9 @@ val numTags = 16
 val tagOffset = 0 //Used if multiple accelerators to avoid tag collisions
 
 //Instantiate Controller
-val memControl = Module(new MemController(dataWidth, addrWidth, reqBufferLen, rspBufferLen, maxReqBytes, roccAddrWidth, roccDataWidth, roccTagWidth, roccCmdWidth, roccTypWidth, numTags, tagOffset))
+// val memControl = Module(new MemController(dataWidth, addrWidth, reqBufferLen, rspBufferLen, maxReqBytes, roccAddrWidth, roccDataWidth, roccTagWidth, roccCmdWidth, roccTypWidth, numTags, tagOffset))
 
+/*
 if(accel.io.ap_bus.length > 0){
 //We have memory bus interfaces on the accelerator, create a memory controller
 
@@ -132,6 +133,7 @@ memControl.io.roCCRspData  := io.mem.resp.bits.data
 //val roCCRespTyp   
 memControl.io.roCCRspValid := io.mem.resp.valid
 }
+*/
 
 //===== End Mem Controller =====
 //===== Begin Argument Handling =====
@@ -141,18 +143,22 @@ val cArgs = List(rs1, rs2)
 val cArgsUnbuffered = List(rs1_unbuffered, rs2_unbuffered)
 //Argument numbers are specified in the blackbox
 //ap_bus offsets
+/*
 for(i <- 0 until memControl.io.offsetAddrs.length){
 //ap_bus uses the unbuffered input because it is buffered on the first cycle
 memControl.io.offsetAddrs(i) := cArgsUnbuffered(accel.ap_bus_argLoc(i))
 }
+*/
 //===== End Argument Handling =====
 
+/*
 if(accel.io.ap_bus.length > 0){
 //Will run ap_start after offsets loaded
 for(i <- 0 until memControl.io.loadOffsets.length){
   memControl.io.loadOffsets(i) := (state === idle) && cmd.fire()
 }
 }
+*/
 
 
 //===== Begin Controller State Machine Logic =====
@@ -232,6 +238,7 @@ is (working){
   }
 
 
+  /*
   if(accel.io.ap_bus.length == 0){
     when(ap_idle){
       //if the operation was completed (result valid), and the accelerator is ready
@@ -279,6 +286,7 @@ is (working){
       //extra cycle.
     }
   }
+  */
   when(respValid && io.resp.ready){
     //The processor has read the response.  There is no more data for it
     //Drive resp.valid low to avoid stalling processor
@@ -294,6 +302,7 @@ is (working){
   // Set this true to trigger an interrupt on the processor (please refer to supervisor documentation)
 
   // MEMORY REQUEST INTERFACE
+  /*
   if(accel.io.ap_bus.length == 0){
     // No connected memory bus lines on accelerator
     // We will not be doing any memory ops in this accelerator
@@ -305,6 +314,7 @@ is (working){
     io.mem.req.bits.signed := Bool(false)
     io.mem.req.bits.data := UInt(0) // not performing any stores
   }
+  */
   //io.mem.invalidate_lr := Bool(false)
 
   //If enable physical addr, make sure to use pmp instr to set the right permission on addr range
